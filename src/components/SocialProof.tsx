@@ -65,10 +65,10 @@ export default function SocialProof() {
     <section
       ref={sectionRef}
       id="results"
-      className="relative py-24 md:py-32 px-6 lg:px-12 bg-surface"
+      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 bg-surface"
     >
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-10">
           <span className="section-label">PROVEN RESULTS</span>
           <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-cream mt-4">
             Numbers Don&apos;t <span className="text-gold italic">Lie</span>

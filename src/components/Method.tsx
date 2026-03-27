@@ -62,10 +62,10 @@ export default function Method() {
     <section
       ref={sectionRef}
       id="process"
-      className="relative py-24 md:py-32 px-6 lg:px-12"
+      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16"
     >
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-10">
           <span className="section-label">THE METHOD</span>
           <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-cream mt-4">
             Three Steps to <span className="text-gold italic">Scale</span>

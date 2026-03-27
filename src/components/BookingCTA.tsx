@@ -1,8 +1,13 @@
 "use client";
 
 import { useState, FormEvent } from "react";
-import { Calendar, FileText, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
-import Script from "next/script";
+import { Calendar, FileText, ArrowRight, CheckCircle, Loader2, Lock } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const InlineWidget = dynamic(
+  () => import("react-calendly").then((mod) => mod.InlineWidget),
+  { ssr: false }
+);
 
 export default function BookingCTA() {
   const [activeTab, setActiveTab] = useState<"calendly" | "form">("calendly");
@@ -45,65 +50,76 @@ export default function BookingCTA() {
   };
 
   return (
-    <section id="apply" className="relative py-24 md:py-32 px-6 lg:px-12 overflow-hidden">
+    <section id="apply" className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 overflow-hidden">
       {/* FORGE Watermark */}
-      <div className="watermark text-[18vw] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
+        style={{
+          fontSize: "18vw",
+          color: "#C9A84C",
+          opacity: 0.03,
+          fontFamily: "var(--font-heading)",
+          fontWeight: 700,
+          whiteSpace: "nowrap",
+        }}
+      >
         FORGE
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-4">
           <span className="section-label">TAKE THE FIRST STEP</span>
-          <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-cream mt-4">
-            Ready to <span className="text-gold italic">Ascend?</span>
-          </h2>
-          <p className="font-body text-muted text-lg mt-4 max-w-xl mx-auto">
-            Book a free 30-minute strategy call or fill out an application — and let&apos;s see if you&apos;re a fit.
-          </p>
         </div>
+        <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-cream text-center mb-6">
+          Ready to <span className="text-gold italic">Ascend?</span>
+        </h2>
+        <p className="font-body text-lg text-center max-w-xl mx-auto mb-10" style={{ color: "#6B6B6B" }}>
+          Book a free 30-minute strategy call or fill out an application — and let&apos;s see if you&apos;re a fit.
+        </p>
 
         {/* Tab Switcher */}
         <div className="flex justify-center gap-3 mb-8">
           <button
             onClick={() => setActiveTab("calendly")}
             id="tab-calendly"
-            className={`flex items-center gap-2 px-6 py-3 rounded-full font-body text-sm font-semibold transition-all duration-300 ${
+            className="flex items-center gap-2 px-6 py-3 rounded-full font-body text-sm font-semibold transition-all duration-300"
+            style={
               activeTab === "calendly"
-                ? "bg-gold text-background shadow-[0_0_20px_rgba(201,168,76,0.3)]"
-                : "bg-surface border border-border text-muted hover:text-cream hover:border-gold/30"
-            }`}
+                ? { background: "#C9A84C", color: "#0D0D0D", boxShadow: "0 0 20px rgba(201,168,76,0.3)" }
+                : { border: "1px solid #2A2A2A", color: "rgba(232,224,208,0.6)" }
+            }
           >
             <Calendar size={16} />
-            Schedule a Call
+            Book Instantly
           </button>
           <button
             onClick={() => setActiveTab("form")}
             id="tab-form"
-            className={`flex items-center gap-2 px-6 py-3 rounded-full font-body text-sm font-semibold transition-all duration-300 ${
+            className="flex items-center gap-2 px-6 py-3 rounded-full font-body text-sm font-semibold transition-all duration-300"
+            style={
               activeTab === "form"
-                ? "bg-gold text-background shadow-[0_0_20px_rgba(201,168,76,0.3)]"
-                : "bg-surface border border-border text-muted hover:text-cream hover:border-gold/30"
-            }`}
+                ? { background: "#C9A84C", color: "#0D0D0D", boxShadow: "0 0 20px rgba(201,168,76,0.3)" }
+                : { border: "1px solid #2A2A2A", color: "rgba(232,224,208,0.6)" }
+            }
           >
             <FileText size={16} />
-            Apply Now
+            Send a Message
           </button>
         </div>
 
         {/* Tab Content */}
-        <div className="bg-surface border border-border rounded-3xl overflow-hidden min-h-[500px]">
+        <div className="rounded-3xl overflow-hidden min-h-[500px]" style={{ background: "#1A1A1A" }}>
           {/* Calendly Tab */}
           {activeTab === "calendly" && (
-            <div className="p-2">
-              <div
-                className="calendly-inline-widget"
-                data-url="https://calendly.com/solomonfiverr98/30min?background_color=1a1a1a&text_color=f5f5f5&primary_color=c9a84c"
-              />
-              <Script
-                src="https://assets.calendly.com/assets/external/widget.js"
-                strategy="lazyOnload"
-              />
-            </div>
+            <InlineWidget
+              url="https://calendly.com/solomonfiverr98/30min"
+              styles={{ minHeight: "650px", width: "100%" }}
+              pageSettings={{
+                backgroundColor: "0D0D0D",
+                primaryColor: "C9A84C",
+                textColor: "F5F5F5",
+              }}
+            />
           )}
 
           {/* Form Tab */}
@@ -111,20 +127,19 @@ export default function BookingCTA() {
             <div className="p-8 md:p-12">
               {formState === "success" ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <CheckCircle size={56} className="text-gold mb-6" />
+                  <CheckCircle size={56} style={{ color: "#C9A84C" }} className="mb-6" />
                   <h3 className="font-heading text-3xl font-bold text-cream mb-3">
                     Application Received!
                   </h3>
-                  <p className="font-body text-muted text-base max-w-md">
+                  <p className="font-body text-base max-w-md" style={{ color: "#6B6B6B" }}>
                     We&apos;ll review your application and get back to you within 24 hours.
-                    Check your inbox for a confirmation.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="grid md:grid-cols-2 gap-5">
                     <div>
-                      <label className="block font-body text-cream text-sm font-medium mb-2">
+                      <label className="block font-body text-sm font-medium mb-2" style={{ color: "#F5F5F5" }}>
                         Full Name *
                       </label>
                       <input
@@ -132,71 +147,75 @@ export default function BookingCTA() {
                         name="name"
                         required
                         id="lead-name"
-                        className="w-full bg-background border border-border rounded-xl px-4 py-3 font-body text-cream text-sm
-                          placeholder:text-muted/50 focus:outline-none focus:border-gold/50 transition-colors"
+                        className="w-full rounded-xl px-4 py-3 font-body text-sm
+                          focus:outline-none transition-colors"
+                        style={{ background: "#0D0D0D", border: "1px solid #2A2A2A", color: "#F5F5F5" }}
                         placeholder="John Smith"
                       />
                     </div>
                     <div>
-                      <label className="block font-body text-cream text-sm font-medium mb-2">
-                        Email *
+                      <label className="block font-body text-sm font-medium mb-2" style={{ color: "#F5F5F5" }}>
+                        Email Address *
                       </label>
                       <input
                         type="email"
                         name="email"
                         required
                         id="lead-email"
-                        className="w-full bg-background border border-border rounded-xl px-4 py-3 font-body text-cream text-sm
-                          placeholder:text-muted/50 focus:outline-none focus:border-gold/50 transition-colors"
+                        className="w-full rounded-xl px-4 py-3 font-body text-sm
+                          focus:outline-none transition-colors"
+                        style={{ background: "#0D0D0D", border: "1px solid #2A2A2A", color: "#F5F5F5" }}
                         placeholder="john@example.com"
                       />
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block font-body text-cream text-sm font-medium mb-2">
-                        Phone
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        id="lead-phone"
-                        className="w-full bg-background border border-border rounded-xl px-4 py-3 font-body text-cream text-sm
-                          placeholder:text-muted/50 focus:outline-none focus:border-gold/50 transition-colors"
-                        placeholder="+1 (555) 000-0000"
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-body text-cream text-sm font-medium mb-2">
-                        Business Type
-                      </label>
-                      <select
-                        name="business_type"
-                        id="lead-business-type"
-                        className="w-full bg-background border border-border rounded-xl px-4 py-3 font-body text-cream text-sm
-                          focus:outline-none focus:border-gold/50 transition-colors"
-                      >
-                        <option value="">Select...</option>
-                        <option value="life_coaching">Life Coaching</option>
-                        <option value="business_coaching">Business Coaching</option>
-                        <option value="executive_coaching">Executive Coaching</option>
-                        <option value="health_wellness">Health & Wellness</option>
-                        <option value="relationship">Relationship</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </div>
+                  <div>
+                    <label className="block font-body text-sm font-medium mb-2" style={{ color: "#F5F5F5" }}>
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      id="lead-phone"
+                      className="w-full rounded-xl px-4 py-3 font-body text-sm
+                        focus:outline-none transition-colors"
+                      style={{ background: "#0D0D0D", border: "1px solid #2A2A2A", color: "#F5F5F5" }}
+                      placeholder="+1 (555) 000-0000"
+                    />
                   </div>
 
                   <div>
-                    <label className="block font-body text-cream text-sm font-medium mb-2">
-                      Current Monthly Revenue
+                    <label className="block font-body text-sm font-medium mb-2" style={{ color: "#F5F5F5" }}>
+                      What type of coaching do you do?
+                    </label>
+                    <select
+                      name="business_type"
+                      id="lead-business-type"
+                      className="w-full rounded-xl px-4 py-3 font-body text-sm
+                        focus:outline-none transition-colors"
+                      style={{ background: "#0D0D0D", border: "1px solid #2A2A2A", color: "#F5F5F5" }}
+                    >
+                      <option value="">Select...</option>
+                      <option value="life_coaching">Life Coaching</option>
+                      <option value="business_coaching">Business Coaching</option>
+                      <option value="executive_coaching">Executive Coaching</option>
+                      <option value="health_wellness">Health &amp; Wellness</option>
+                      <option value="relationship">Relationship</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-body text-sm font-medium mb-2" style={{ color: "#F5F5F5" }}>
+                      Current monthly revenue?
                     </label>
                     <select
                       name="monthly_revenue"
                       id="lead-revenue"
-                      className="w-full bg-background border border-border rounded-xl px-4 py-3 font-body text-cream text-sm
-                        focus:outline-none focus:border-gold/50 transition-colors"
+                      className="w-full rounded-xl px-4 py-3 font-body text-sm
+                        focus:outline-none transition-colors"
+                      style={{ background: "#0D0D0D", border: "1px solid #2A2A2A", color: "#F5F5F5" }}
                     >
                       <option value="">Select...</option>
                       <option value="0-3k">$0 – $3,000</option>
@@ -207,15 +226,16 @@ export default function BookingCTA() {
                   </div>
 
                   <div>
-                    <label className="block font-body text-cream text-sm font-medium mb-2">
-                      What&apos;s your #1 goal for the next 90 days?
+                    <label className="block font-body text-sm font-medium mb-2" style={{ color: "#F5F5F5" }}>
+                      What is your goal in 90 days?
                     </label>
                     <textarea
                       name="goal"
                       rows={3}
                       id="lead-goal"
-                      className="w-full bg-background border border-border rounded-xl px-4 py-3 font-body text-cream text-sm
-                        placeholder:text-muted/50 focus:outline-none focus:border-gold/50 transition-colors resize-none"
+                      className="w-full rounded-xl px-4 py-3 font-body text-sm
+                        focus:outline-none transition-colors resize-none"
+                      style={{ background: "#0D0D0D", border: "1px solid #2A2A2A", color: "#F5F5F5" }}
                       placeholder="e.g., Close my first $5k client, build a group program..."
                     />
                   </div>
@@ -228,9 +248,10 @@ export default function BookingCTA() {
                     type="submit"
                     id="lead-submit"
                     disabled={formState === "loading"}
-                    className="group w-full bg-gold text-background py-4 rounded-full font-body font-semibold text-base
-                      hover:bg-gold-hover transition-all duration-300 flex items-center justify-center gap-2
+                    className="group w-full py-4 rounded-full font-body font-semibold text-base
+                      transition-all duration-300 flex items-center justify-center gap-2
                       hover:shadow-[0_0_30px_rgba(201,168,76,0.4)] disabled:opacity-60 disabled:cursor-not-allowed"
+                    style={{ background: "#C9A84C", color: "#0D0D0D" }}
                   >
                     {formState === "loading" ? (
                       <>
@@ -239,11 +260,16 @@ export default function BookingCTA() {
                       </>
                     ) : (
                       <>
-                        Submit Application
+                        Apply for Your Strategy Call
                         <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
                       </>
                     )}
                   </button>
+
+                  <p className="text-center font-body text-xs flex items-center justify-center gap-1.5" style={{ color: "#6B6B6B" }}>
+                    <Lock size={12} />
+                    We respect your privacy. No spam ever.
+                  </p>
                 </form>
               )}
             </div>

@@ -56,8 +56,8 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer id="footer" className="bg-footer pt-20 pb-8 px-6 lg:px-12">
-      <div className="max-w-6xl mx-auto">
+    <footer id="footer" className="pt-16 md:pt-24 pb-8 px-6 md:px-12 lg:px-16" style={{ background: "#0D0D0D" }}>
+      <div className="max-w-7xl mx-auto">
         {/* Big Logo */}
         <div className="text-center mb-16">
           <h3 className="font-heading text-3xl md:text-7xl lg:text-8xl font-bold text-gold/20 tracking-wider">

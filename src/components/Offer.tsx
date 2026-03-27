@@ -47,10 +47,10 @@ export default function Offer() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-24 md:py-32 px-6 lg:px-12 bg-surface"
+      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 bg-surface"
     >
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-14">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-10">
           <span className="section-label">THE OFFER</span>
           <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-cream mt-4">
             Everything You Need to{" "}
