@@ -4,12 +4,12 @@
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0A0A0A] pt-24 pb-12 px-6 md:px-12 lg:px-16 border-t border-[rgba(201,168,76,0.1)]">
-      <div className="max-w-7xl mx-auto">
+    <footer className="bg-[#0A0A0A] py-16 md:py-24 border-t border-[rgba(201,168,76,0.1)]">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
         
-        {/* Top Logo */}
+        {/* Large Gold Title */}
         <div className="text-center mb-20">
-          <h2 className="font-heading text-[clamp(40px,10vw,80px)] text-[#C9A84C] font-bold leading-none select-none">
+          <h2 className="font-heading italic text-[clamp(40px,10vw,120px)] text-[#C9A84C] uppercase leading-none select-none tracking-tight">
             FORGE &amp; ASCEND
           </h2>
         </div>

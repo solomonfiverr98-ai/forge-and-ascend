@@ -66,9 +66,9 @@ export default function SocialProof() {
     <section
       ref={sectionRef}
       id="results"
-      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 bg-[#1A1A1A]"
+      className="relative py-16 md:py-24 bg-[#1A1A1A] overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 text-center">
         {/* Label and Headline */}
         <div className="text-center mb-16">
           <span 

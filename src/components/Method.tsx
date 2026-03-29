@@ -73,9 +73,9 @@ export default function Method() {
     <section
       ref={sectionRef}
       id="process"
-      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 bg-[#0D0D0D] overflow-hidden"
+      className="relative py-16 md:py-24 bg-[#0D0D0D] overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
         {/* Label and Headline */}
         <div className="text-center mb-24">
           <span 

@@ -52,9 +52,9 @@ export default function FAQ() {
     <section
       ref={sectionRef}
       id="faq"
-      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 bg-[#1A1A1A]"
+      className="relative py-16 md:py-24 bg-[#1A1A1A] overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
         <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
           
           {/* LEFT SIDE */}

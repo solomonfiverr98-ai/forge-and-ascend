@@ -59,7 +59,7 @@ export default function Hero() {
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
           
           {/* LEFT SIDE — 55% */}
-          <div className="flex flex-col gap-8 lg:w-[55%] items-start">
+          <div className="flex flex-col gap-8 w-full lg:w-[55%] items-center lg:items-start text-center lg:text-left">
             {/* Label */}
             <div data-hero className="opacity-0">
               <span className="text-[#C9A84C] uppercase text-[12px] tracking-[0.2em] font-body font-semibold">
@@ -67,14 +67,18 @@ export default function Hero() {
               </span>
             </div>
 
-            {/* Headline */}
+            {/* Headline — 3 Separate Lines */}
             <div data-hero className="opacity-0">
-              <h1 className="font-heading leading-[1.1] text-left">
-                <span className="block text-[#F5F5F5] text-[clamp(48px,8vw,88px)]">Turn Your Expertise</span>
-                <span className="block text-[#F5F5F5] text-[clamp(48px,8vw,88px)]">Into a Business</span>
-                <span className="block text-[#C9A84C] italic text-[clamp(48px,8vw,88px)] mt-2">
-                  That Runs Without You.
-                </span>
+              <h1 className="font-heading leading-[1.1]">
+                  <span className="block text-[clamp(48px,6vw,88px)] font-['Cormorant_Garamond'] text-[#F5F5F5] leading-[1.1] whitespace-nowrap">
+                    Turn Your Expertise
+                  </span>
+                  <span className="block text-[clamp(48px,6vw,88px)] font-['Cormorant_Garamond'] text-[#F5F5F5] leading-[1.1] whitespace-nowrap">
+                    Into a Business
+                  </span>
+                  <span className="block text-[clamp(48px,6vw,88px)] font-['Cormorant_Garamond'] italic text-[#C9A84C] leading-[1.1] whitespace-nowrap">
+                    That Runs Without You.
+                  </span>
               </h1>
             </div>
 
@@ -122,12 +126,12 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* RIGHT SIDE — 45% */}
-          <div className="relative lg:w-[45%] w-full flex justify-center">
+          {/* RIGHT SIDE — 45% (Hidden on Mobile) */}
+          <div className="hidden lg:flex relative lg:w-[45%] justify-center">
             {/* Organic Blob Image */}
             <div 
               data-hero
-              className="opacity-0 relative w-full max-w-[500px] aspect-square lg:aspect-auto lg:h-[500px] overflow-hidden"
+              className="opacity-0 relative w-full max-w-[500px] aspect-square lg:h-[500px] overflow-hidden"
               style={{
                 borderRadius: "60% 40% 70% 30% / 50% 60% 40% 50%"
               }}
@@ -144,7 +148,7 @@ export default function Hero() {
             {/* Floating Card — Bottom Left */}
             <div 
               data-hero
-              className="opacity-0 absolute -bottom-6 -left-4 md:left-0 bg-[rgba(201,168,76,0.15)] border border-[rgba(201,168,76,0.3)] backdrop-blur-md rounded-2xl p-5 shadow-2xl z-20"
+              className="opacity-0 absolute -bottom-6 -left-4 bg-[rgba(201,168,76,0.15)] border border-[rgba(201,168,76,0.3)] backdrop-blur-md rounded-2xl p-5 shadow-2xl z-20"
             >
               <p className="font-body text-[12px] text-[#C9A84C]/70 mb-1 uppercase tracking-wider">
                 Average Client Result

@@ -81,7 +81,7 @@ export default function BookingCTA() {
     <section
       ref={sectionRef}
       id="apply"
-      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 bg-[#0D0D0D] overflow-hidden"
+      className="relative py-16 md:py-24 bg-[#0D0D0D] overflow-hidden"
     >
       {/* Giant "FORGE" Watermark */}
       <div
@@ -98,9 +98,9 @@ export default function BookingCTA() {
         FORGE
       </div>
 
-      <div className="relative z-10 w-full max-w-4xl mx-auto text-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 text-center">
         {/* Label and Headline */}
-        <div className="mb-12">
+        <div className="mb-12 max-w-3xl mx-auto">
           <span 
             data-fade-up 
             className="opacity-0 block uppercase text-[#C9A84C] text-[12px] tracking-[0.2em] font-body font-semibold mb-6"
@@ -109,14 +109,15 @@ export default function BookingCTA() {
           </span>
           <h2 
             data-fade-up 
-            className="opacity-0 font-heading text-[clamp(48px,7vw,72px)] text-[#F5F5F5] leading-tight mb-6"
+            className="opacity-0 font-heading text-[clamp(40px,6vw,64px)] text-[#F5F5F5] leading-tight mb-6"
           >
+            Ready to Forge Your Legacy?
           </h2>
           <p 
             data-fade-up 
-            className="opacity-0 font-body text-[16px] text-[#6B6B6B] max-w-xl mx-auto leading-relaxed"
+            className="opacity-0 font-body text-[16px] text-[#6B6B6B] leading-relaxed"
           >
-            Book a free 30-minute strategy call or fill out an application &mdash; and let&apos;s see if you&apos;re a fit.
+            Book a free strategy call or apply for the accelerator below.
           </p>
         </div>
 
