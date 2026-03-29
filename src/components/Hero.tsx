@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { ArrowRight, Star } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { gsap } from "gsap";
 
 export default function Hero() {
@@ -23,7 +23,14 @@ export default function Hero() {
     gsap.fromTo(
       elements,
       { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.8, stagger: 0.12, ease: "power3.out", delay: 0.5 }
+      { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8, 
+        stagger: 0.1, 
+        ease: "power3.out", 
+        delay: 0.2 
+      }
     );
   }, []);
 
@@ -31,19 +38,17 @@ export default function Hero() {
     <section
       ref={containerRef}
       id="hero"
-      className="relative min-h-dvh flex items-center overflow-hidden pt-20 pb-16"
-      style={{ background: "#0D0D0D" }}
+      className="relative min-h-[100dvh] bg-[#0D0D0D] flex items-center overflow-hidden py-16 md:py-24"
     >
-      {/* ASCEND Watermark */}
+      {/* Giant "ASCEND" Watermark */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none z-0"
         style={{
           fontSize: "15vw",
           color: "#C9A84C",
           opacity: 0.03,
           fontFamily: "var(--font-heading)",
           fontWeight: 700,
-          letterSpacing: "0.05em",
           whiteSpace: "nowrap",
         }}
       >
@@ -51,27 +56,23 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
-        <div className="flex flex-col lg:flex-row lg:items-center gap-12 lg:gap-6">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
+          
           {/* LEFT SIDE — 55% */}
-          <div className="flex flex-col gap-6 lg:w-[55%]">
+          <div className="flex flex-col gap-8 lg:w-[55%] items-start">
             {/* Label */}
             <div data-hero className="opacity-0">
-              <span
-                className="font-body uppercase tracking-[0.2em] text-xs"
-                style={{ color: "#C9A84C", fontSize: "12px" }}
-              >
+              <span className="text-[#C9A84C] uppercase text-[12px] tracking-[0.2em] font-body font-semibold">
                 ✦ HIGH-TICKET COACHING ACCELERATOR
               </span>
             </div>
 
             {/* Headline */}
             <div data-hero className="opacity-0">
-              <h1 className="font-heading text-4xl md:text-6xl lg:text-[88px] font-bold leading-[0.95]">
-                <span style={{ color: "#F5F5F5" }}>Turn Your Expertise</span>
-                <br />
-                <span style={{ color: "#F5F5F5" }}>Into a Business</span>
-                <br />
-                <span className="italic" style={{ color: "#C9A84C" }}>
+              <h1 className="font-heading leading-[1.1] text-left">
+                <span className="block text-[#F5F5F5] text-[clamp(48px,8vw,88px)]">Turn Your Expertise</span>
+                <span className="block text-[#F5F5F5] text-[clamp(48px,8vw,88px)]">Into a Business</span>
+                <span className="block text-[#C9A84C] italic text-[clamp(48px,8vw,88px)] mt-2">
                   That Runs Without You.
                 </span>
               </h1>
@@ -80,121 +81,90 @@ export default function Hero() {
             {/* Subtext */}
             <p
               data-hero
-              className="opacity-0 font-body text-lg max-w-lg leading-relaxed"
-              style={{ color: "#6B6B6B", fontSize: "18px" }}
+              className="opacity-0 font-body text-[clamp(16px,2vw,18px)] text-[#6B6B6B] max-w-lg leading-relaxed"
             >
-              Join 200+ coaches who went from inconsistent $3k months to predictable $15k+ revenue
+              Join 200+ coaches who went from inconsistent $3k months to predictable $15k+ revenue 
               using our proven system.
             </p>
 
             {/* CTA Buttons */}
-            <div data-hero className="opacity-0 flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2">
+            <div data-hero className="opacity-0 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <a
                 href="#apply"
-                id="hero-cta-primary"
-                className="group px-8 py-4 rounded-full font-body font-semibold text-base
-                  transition-all duration-300 flex items-center justify-center gap-2
-                  hover:shadow-[0_0_30px_rgba(201,168,76,0.4)]"
-                style={{ background: "#C9A84C", color: "#0D0D0D" }}
+                className="inline-flex items-center justify-center px-8 py-4 rounded-full bg-[#C9A84C] text-[#0D0D0D] font-body font-semibold text-base transition-transform hover:scale-[1.02]"
               >
-                Book Your Free Call
-                <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+                Book Your Free Call <ArrowRight className="ml-2 w-5 h-5" />
               </a>
               <a
                 href="#results"
-                id="hero-cta-secondary"
-                className="group px-8 py-4 rounded-full font-body font-semibold text-base
-                  transition-all duration-300 flex items-center justify-center gap-2"
-                style={{ border: "1px solid #2A2A2A", color: "#E8E0D0" }}
+                className="inline-flex items-center justify-center px-8 py-4 rounded-full border border-[#2A2A2A] text-[#E8E0D0] font-body font-semibold text-base transition-transform hover:scale-[1.02]"
               >
                 See Client Results
               </a>
             </div>
 
             {/* Social Proof */}
-            <div data-hero className="opacity-0 flex items-center gap-4 mt-4">
-              <div className="flex -space-x-2">
+            <div data-hero className="opacity-0 flex items-center gap-4 mt-2">
+              <div className="flex -space-x-3">
                 {[
-                  "1507003211169-0a1dd7228f2d",
-                  "1494790108377-be9c29b29330",
-                  "1472099645785-5658abf4ff4e",
-                ].map((id, i) => (
-                  <Image
-                    key={i}
-                    src={`https://images.unsplash.com/photo-${id}?w=80&h=80&fit=crop&crop=face`}
-                    alt={`Client ${i + 1}`}
-                    width={36}
-                    height={36}
-                    className="rounded-full object-cover border-2"
-                    style={{ borderColor: "#0D0D0D" }}
-                  />
+                  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100",
+                  "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100",
+                  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
+                ].map((src, i) => (
+                  <div key={i} className="relative w-10 h-10 rounded-full border-2 border-[#0D0D0D] overflow-hidden">
+                    <Image src={src} alt={`Coach ${i+1}`} fill className="object-cover" />
+                  </div>
                 ))}
               </div>
-              <div>
-                <div className="flex items-center gap-0.5 mb-0.5">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} size={13} className="fill-current" style={{ color: "#C9A84C" }} />
-                  ))}
-                </div>
-                <p className="text-sm font-body" style={{ color: "#6B6B6B" }}>
-                  Trusted by <span className="font-semibold" style={{ color: "#F5F5F5" }}>200+</span> coaches
-                </p>
-              </div>
+              <p className="text-[#6B6B6B] font-body text-[14px]">
+                Trusted by 200+ coaches
+              </p>
             </div>
           </div>
 
           {/* RIGHT SIDE — 45% */}
-          <div className="relative flex items-center justify-center lg:w-[45%]">
-            {/* Blob Image */}
-            <div
+          <div className="relative lg:w-[45%] w-full flex justify-center">
+            {/* Organic Blob Image */}
+            <div 
               data-hero
-              className="opacity-0 relative overflow-hidden"
+              className="opacity-0 relative w-full max-w-[500px] aspect-square lg:aspect-auto lg:h-[500px] overflow-hidden"
               style={{
-                borderRadius: "60% 40% 70% 30% / 50% 60% 40% 50%",
-                width: "min(400px, 85vw)",
-                aspectRatio: "4/5",
+                borderRadius: "60% 40% 70% 30% / 50% 60% 40% 50%"
               }}
             >
-              <Image
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=1000&fit=crop&crop=face"
-                alt="Professional coach"
-                fill
+              <Image 
+                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800" 
+                alt="Coach Result" 
+                fill 
                 className="object-cover"
                 priority
               />
             </div>
 
             {/* Floating Card — Bottom Left */}
-            <div
+            <div 
               data-hero
-              className="opacity-0 absolute left-0 sm:-left-2 bottom-8 md:bottom-12 rounded-2xl p-4 backdrop-blur-md"
-              style={{
-                background: "rgba(201, 168, 76, 0.15)",
-                border: "1px solid rgba(201, 168, 76, 0.3)",
-              }}
+              className="opacity-0 absolute -bottom-6 -left-4 md:left-0 bg-[rgba(201,168,76,0.15)] border border-[rgba(201,168,76,0.3)] backdrop-blur-md rounded-2xl p-5 shadow-2xl z-20"
             >
-              <p className="font-body text-xs mb-0.5" style={{ color: "#C9A84C" }}>
+              <p className="font-body text-[12px] text-[#C9A84C]/70 mb-1 uppercase tracking-wider">
                 Average Client Result
               </p>
-              <p className="font-heading text-xl font-bold" style={{ color: "#C9A84C" }}>
+              <p className="font-heading text-[24px] text-[#C9A84C] font-bold leading-tight">
                 $8,400/mo in 90 days
               </p>
             </div>
 
             {/* Floating Badge — Top Right */}
-            <div
+            <div 
               data-hero
-              className="opacity-0 absolute right-0 sm:-right-2 top-4 md:top-8 rounded-full px-4 py-2"
-              style={{ background: "#C9A84C", color: "#0D0D0D" }}
+              className="opacity-0 absolute -top-4 -right-4 bg-[#C9A84C] text-[#0D0D0D] rounded-full px-5 py-2.5 font-body text-[12px] font-semibold shadow-xl z-20"
             >
-              <p className="font-body text-sm font-bold">✦ 5 Spots Left</p>
+              ✦ 5 Spots Left
             </div>
           </div>
+
         </div>
       </div>
-
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0D0D0D] to-transparent pointer-events-none" />
     </section>
   );
 }

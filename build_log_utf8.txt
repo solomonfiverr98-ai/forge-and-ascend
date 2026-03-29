@@ -1,0 +1,448 @@
+﻿
+> forge-ascend-app@0.1.0 build
+> next build
+
+Ôû▓ Next.js 16.2.1 (Turbopack)
+- Environments: .env.local
+
+  Creating an optimized production build ...
+node.exe : 
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: (:  
+  String) [], RemoteExc   
+ eption
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+> Build error occurred
+Error: Turbopack build 
+failed with 8 errors:
+./src/components/Footer.ts
+x:3:1
+Export Facebook doesn't 
+exist in target module
+  [90m1 |[0m [32m"use 
+client"[0m;
+  [90m2 |[0m
+[31m[1m>[0m [90m3 
+|[0m [36mimport[0m { 
+[33mInstagram[0m, 
+[33mTwitter[0m, 
+[33mLinkedin[0m, 
+[33mFacebook[0m } 
+[36mfrom[0m 
+[32m"lucide-react"[0m;
+  [90m  |[0m [31m[1m^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^[0m
+  [90m4 |[0m
+  [90m5 |[0m 
+[36mexport[0m 
+[36mdefault[0m 
+[36mfunction[0m 
+[33mFooter[0m() {
+  [90m6 |[0m   
+[36mreturn[0m (
+
+The export Facebook was 
+not found in module [proje
+ct]/node_modules/lucide-re
+act/dist/esm/lucide-react.
+js [app-client] 
+(ecmascript).
+Did you mean to import 
+Webhook?
+All exports of the module 
+are statically known (It 
+doesn't have dynamic 
+exports). So it's known 
+statically that the 
+requested export doesn't 
+exist.
+
+Import trace:
+  Server Component:
+    ./src/components/Foote
+r.tsx
+    ./src/app/page.tsx
+
+
+./src/components/Footer.ts
+x:3:1
+Export Facebook doesn't 
+exist in target module
+  [90m1 |[0m [32m"use 
+client"[0m;
+  [90m2 |[0m
+[31m[1m>[0m [90m3 
+|[0m [36mimport[0m { 
+[33mInstagram[0m, 
+[33mTwitter[0m, 
+[33mLinkedin[0m, 
+[33mFacebook[0m } 
+[36mfrom[0m 
+[32m"lucide-react"[0m;
+  [90m  |[0m [31m[1m^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^[0m
+  [90m4 |[0m
+  [90m5 |[0m 
+[36mexport[0m 
+[36mdefault[0m 
+[36mfunction[0m 
+[33mFooter[0m() {
+  [90m6 |[0m   
+[36mreturn[0m (
+
+The export Facebook was 
+not found in module [proje
+ct]/node_modules/lucide-re
+act/dist/esm/lucide-react.
+js [app-ssr] (ecmascript).
+Did you mean to import 
+Webhook?
+All exports of the module 
+are statically known (It 
+doesn't have dynamic 
+exports). So it's known 
+statically that the 
+requested export doesn't 
+exist.
+
+Import trace:
+  Server Component:
+    ./src/components/Foote
+r.tsx
+    ./src/app/page.tsx
+
+
+./src/components/Footer.ts
+x:3:1
+Export Instagram doesn't 
+exist in target module
+  [90m1 |[0m [32m"use 
+client"[0m;
+  [90m2 |[0m
+[31m[1m>[0m [90m3 
+|[0m [36mimport[0m { 
+[33mInstagram[0m, 
+[33mTwitter[0m, 
+[33mLinkedin[0m, 
+[33mFacebook[0m } 
+[36mfrom[0m 
+[32m"lucide-react"[0m;
+  [90m  |[0m [31m[1m^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^[0m
+  [90m4 |[0m
+  [90m5 |[0m 
+[36mexport[0m 
+[36mdefault[0m 
+[36mfunction[0m 
+[33mFooter[0m() {
+  [90m6 |[0m   
+[36mreturn[0m (
+
+The export Instagram was 
+not found in module [proje
+ct]/node_modules/lucide-re
+act/dist/esm/lucide-react.
+js [app-client] 
+(ecmascript).
+Did you mean to import 
+Star?
+All exports of the module 
+are statically known (It 
+doesn't have dynamic 
+exports). So it's known 
+statically that the 
+requested export doesn't 
+exist.
+
+Import trace:
+  Server Component:
+    ./src/components/Foote
+r.tsx
+    ./src/app/page.tsx
+
+
+./src/components/Footer.ts
+x:3:1
+Export Instagram doesn't 
+exist in target module
+  [90m1 |[0m [32m"use 
+client"[0m;
+  [90m2 |[0m
+[31m[1m>[0m [90m3 
+|[0m [36mimport[0m { 
+[33mInstagram[0m, 
+[33mTwitter[0m, 
+[33mLinkedin[0m, 
+[33mFacebook[0m } 
+[36mfrom[0m 
+[32m"lucide-react"[0m;
+  [90m  |[0m [31m[1m^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^[0m
+  [90m4 |[0m
+  [90m5 |[0m 
+[36mexport[0m 
+[36mdefault[0m 
+[36mfunction[0m 
+[33mFooter[0m() {
+  [90m6 |[0m   
+[36mreturn[0m (
+
+The export Instagram was 
+not found in module [proje
+ct]/node_modules/lucide-re
+act/dist/esm/lucide-react.
+js [app-ssr] (ecmascript).
+Did you mean to import 
+Star?
+All exports of the module 
+are statically known (It 
+doesn't have dynamic 
+exports). So it's known 
+statically that the 
+requested export doesn't 
+exist.
+
+Import trace:
+  Server Component:
+    ./src/components/Foote
+r.tsx
+    ./src/app/page.tsx
+
+
+./src/components/Footer.ts
+x:3:1
+Export Linkedin doesn't 
+exist in target module
+  [90m1 |[0m [32m"use 
+client"[0m;
+  [90m2 |[0m
+[31m[1m>[0m [90m3 
+|[0m [36mimport[0m { 
+[33mInstagram[0m, 
+[33mTwitter[0m, 
+[33mLinkedin[0m, 
+[33mFacebook[0m } 
+[36mfrom[0m 
+[32m"lucide-react"[0m;
+  [90m  |[0m [31m[1m^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^[0m
+  [90m4 |[0m
+  [90m5 |[0m 
+[36mexport[0m 
+[36mdefault[0m 
+[36mfunction[0m 
+[33mFooter[0m() {
+  [90m6 |[0m   
+[36mreturn[0m (
+
+The export Linkedin was 
+not found in module [proje
+ct]/node_modules/lucide-re
+act/dist/esm/lucide-react.
+js [app-client] 
+(ecmascript).
+Did you mean to import 
+Link?
+All exports of the module 
+are statically known (It 
+doesn't have dynamic 
+exports). So it's known 
+statically that the 
+requested export doesn't 
+exist.
+
+Import trace:
+  Server Component:
+    ./src/components/Foote
+r.tsx
+    ./src/app/page.tsx
+
+
+./src/components/Footer.ts
+x:3:1
+Export Linkedin doesn't 
+exist in target module
+  [90m1 |[0m [32m"use 
+client"[0m;
+  [90m2 |[0m
+[31m[1m>[0m [90m3 
+|[0m [36mimport[0m { 
+[33mInstagram[0m, 
+[33mTwitter[0m, 
+[33mLinkedin[0m, 
+[33mFacebook[0m } 
+[36mfrom[0m 
+[32m"lucide-react"[0m;
+  [90m  |[0m [31m[1m^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^[0m
+  [90m4 |[0m
+  [90m5 |[0m 
+[36mexport[0m 
+[36mdefault[0m 
+[36mfunction[0m 
+[33mFooter[0m() {
+  [90m6 |[0m   
+[36mreturn[0m (
+
+The export Linkedin was 
+not found in module [proje
+ct]/node_modules/lucide-re
+act/dist/esm/lucide-react.
+js [app-ssr] (ecmascript).
+Did you mean to import 
+Link?
+All exports of the module 
+are statically known (It 
+doesn't have dynamic 
+exports). So it's known 
+statically that the 
+requested export doesn't 
+exist.
+
+Import trace:
+  Server Component:
+    ./src/components/Foote
+r.tsx
+    ./src/app/page.tsx
+
+
+./src/components/Footer.ts
+x:3:1
+Export Twitter doesn't 
+exist in target module
+  [90m1 |[0m [32m"use 
+client"[0m;
+  [90m2 |[0m
+[31m[1m>[0m [90m3 
+|[0m [36mimport[0m { 
+[33mInstagram[0m, 
+[33mTwitter[0m, 
+[33mLinkedin[0m, 
+[33mFacebook[0m } 
+[36mfrom[0m 
+[32m"lucide-react"[0m;
+  [90m  |[0m [31m[1m^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^[0m
+  [90m4 |[0m
+  [90m5 |[0m 
+[36mexport[0m 
+[36mdefault[0m 
+[36mfunction[0m 
+[33mFooter[0m() {
+  [90m6 |[0m   
+[36mreturn[0m (
+
+The export Twitter was 
+not found in module [proje
+ct]/node_modules/lucide-re
+act/dist/esm/lucide-react.
+js [app-client] 
+(ecmascript).
+Did you mean to import 
+Timer?
+All exports of the module 
+are statically known (It 
+doesn't have dynamic 
+exports). So it's known 
+statically that the 
+requested export doesn't 
+exist.
+
+Import trace:
+  Server Component:
+    ./src/components/Foote
+r.tsx
+    ./src/app/page.tsx
+
+
+./src/components/Footer.ts
+x:3:1
+Export Twitter doesn't 
+exist in target module
+  [90m1 |[0m [32m"use 
+client"[0m;
+  [90m2 |[0m
+[31m[1m>[0m [90m3 
+|[0m [36mimport[0m { 
+[33mInstagram[0m, 
+[33mTwitter[0m, 
+[33mLinkedin[0m, 
+[33mFacebook[0m } 
+[36mfrom[0m 
+[32m"lucide-react"[0m;
+  [90m  |[0m [31m[1m^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^[0m
+  [90m4 |[0m
+  [90m5 |[0m 
+[36mexport[0m 
+[36mdefault[0m 
+[36mfunction[0m 
+[33mFooter[0m() {
+  [90m6 |[0m   
+[36mreturn[0m (
+
+The export Twitter was 
+not found in module [proje
+ct]/node_modules/lucide-re
+act/dist/esm/lucide-react.
+js [app-ssr] (ecmascript).
+Did you mean to import 
+Timer?
+All exports of the module 
+are statically known (It 
+doesn't have dynamic 
+exports). So it's known 
+statically that the 
+requested export doesn't 
+exist.
+
+Import trace:
+  Server Component:
+    ./src/components/Foote
+r.tsx
+    ./src/app/page.tsx
+
+
+    at <unknown> (./src/co
+mponents/Footer.tsx:3:1)
+    at <unknown> (./src/co
+mponents/Footer.tsx:3:1)
+    at <unknown> (./src/co
+mponents/Footer.tsx:3:1)
+    at <unknown> (./src/co
+mponents/Footer.tsx:3:1)
+    at <unknown> (./src/co
+mponents/Footer.tsx:3:1)
+    at <unknown> (./src/co
+mponents/Footer.tsx:3:1)
+    at <unknown> (./src/co
+mponents/Footer.tsx:3:1)
+    at <unknown> (./src/co
+mponents/Footer.tsx:3:1)

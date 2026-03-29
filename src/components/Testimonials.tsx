@@ -1,188 +1,182 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const testimonials = [
   {
+    quote: "Before Forge & Ascend my site was getting traffic but zero calls. Within 3 weeks I booked 8 discovery calls and closed 3 at $4,500 each.",
     name: "Marcus T.",
     role: "Business Coach",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face",
-    quote:
-      "Before Forge & Ascend my site was getting traffic but zero calls. Within 3 weeks I booked 8 discovery calls and closed 3 at $4,500 each.",
+    photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100",
   },
   {
+    quote: "I was charging $1,500 per client. The positioning work helped me raise to $6,000 and fill 4 spots in one week.",
     name: "Priya S.",
     role: "Executive Coach",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
-    quote:
-      "I was charging $1,500 per client. The positioning work helped me raise to $6,000 and fill 4 spots in one week.",
+    photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100",
   },
   {
+    quote: "My old website looked like everyone else's. This page makes me look like the obvious choice. Best investment I've made.",
     name: "David A.",
     role: "Solopreneur",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
-    quote:
-      "My old website looked like everyone else's. This page makes me look like the obvious choice. Best investment I've made.",
+    photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
   },
   {
+    quote: "From $3k months to $12k months in 90 days. Everything exceeded my expectations.",
     name: "Amina K.",
     role: "Life Coach",
-    image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100&h=100&fit=crop&crop=face",
-    quote:
-      "From $3k months to $12k months in 90 days. Everything exceeded my expectations.",
+    photo: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=100",
   },
 ];
 
 export default function Testimonials() {
-  const [page, setPage] = useState(0);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
 
-  // How many cards visible per page
-  const getPerPage = useCallback(() => {
-    if (typeof window === "undefined") return 3;
-    if (window.innerWidth >= 1024) return 3;
-    if (window.innerWidth >= 768) return 2;
-    return 1;
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      if (window.innerWidth < 768) setItemsPerPage(1);
+      else if (window.innerWidth < 1280) setItemsPerPage(2);
+      else setItemsPerPage(3);
+    };
+
+    updateItemsPerPage();
+    window.addEventListener("resize", updateItemsPerPage);
+    return () => window.removeEventListener("resize", updateItemsPerPage);
   }, []);
 
-  const [perPage, setPerPage] = useState(3);
-
-  useEffect(() => {
-    const update = () => setPerPage(getPerPage());
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, [getPerPage]);
-
-  const totalPages = Math.ceil(testimonials.length / perPage);
-
-  const goTo = useCallback(
-    (index: number) => {
-      const clamped = ((index % totalPages) + totalPages) % totalPages;
-      setPage(clamped);
-    },
-    [totalPages]
-  );
-
-  // Auto-scroll every 5s
-  useEffect(() => {
-    timerRef.current = setInterval(() => goTo(page + 1), 5000);
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [page, goTo]);
-
-  const prev = () => {
-    goTo(page - 1);
-    if (timerRef.current) clearInterval(timerRef.current);
-  };
-  const next = () => {
-    goTo(page + 1);
-    if (timerRef.current) clearInterval(timerRef.current);
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
   };
 
-  const startIdx = page * perPage;
-  const visible = testimonials.slice(startIdx, startIdx + perPage);
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 5000);
+    return () => clearInterval(interval);
+  }, [currentIndex]);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const headlineItems = sectionRef.current.querySelectorAll("[data-fade-up]");
+    
+    gsap.fromTo(
+      headlineItems,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 85%", once: true },
+      }
+    );
+  }, []);
 
   return (
-    <section className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 overflow-hidden">
+    <section
+      ref={sectionRef}
+      id="results"
+      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 bg-[#0D0D0D] overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-4">
-          <span className="section-label">TESTIMONIALS</span>
-        </div>
-        <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-cream text-center mb-6">
-          Real Coaches, <span className="text-gold italic">Real Results</span>
-        </h2>
-        <p className="font-body text-center mb-10 max-w-xl mx-auto" style={{ color: "#6B6B6B" }}>
-          Don&apos;t take our word for it — hear from coaches who transformed their businesses.
-        </p>
-
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-          {visible.map((t, i) => (
-            <div
-              key={`${page}-${i}`}
-              className="rounded-3xl p-8 flex flex-col justify-between transition-all duration-500"
-              style={{ background: "#1A1A1A", border: "1px solid #2A2A2A" }}
-            >
-              {/* Stars */}
-              <div>
-                <div className="flex gap-1 mb-4">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} size={16} className="fill-current" style={{ color: "#C9A84C" }} />
-                  ))}
-                </div>
-
-                {/* Quote */}
-                <blockquote className="font-body text-lg leading-relaxed mb-6" style={{ color: "rgba(245,245,245,0.9)" }}>
-                  &ldquo;{t.quote}&rdquo;
-                </blockquote>
-              </div>
-
-              {/* Author */}
-              <div className="flex items-center gap-4 mt-auto">
-                <Image
-                  src={t.image}
-                  alt={t.name}
-                  width={48}
-                  height={48}
-                  className="rounded-full object-cover"
-                />
-                <div>
-                  <p className="font-body font-semibold" style={{ color: "#F5F5F5" }}>
-                    {t.name}
-                  </p>
-                  <p className="font-body text-sm" style={{ color: "#6B6B6B" }}>
-                    {t.role}
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Navigation */}
-        <div className="flex items-center justify-center gap-4">
-          <button
-            onClick={prev}
-            id="testimonials-prev"
-            className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300"
-            style={{ border: "1px solid #2A2A2A", background: "rgba(26,26,26,0.5)", color: "#F5F5F5" }}
-            aria-label="Previous testimonials"
+        {/* Label and Headline */}
+        <div className="text-center mb-16">
+          <span 
+            data-fade-up 
+            className="opacity-0 block uppercase text-[#C9A84C] text-[12px] tracking-[0.2em] font-body font-semibold mb-6"
           >
-            <ChevronLeft size={20} />
-          </button>
+            CLIENT STORIES
+          </span>
+          <h2 
+            data-fade-up 
+            className="opacity-0 font-heading text-[clamp(36px,5vw,56px)] leading-tight text-[#F5F5F5]"
+          >
+            Real Coaches. <span className="text-[#C9A84C] italic">Real Results.</span>
+          </h2>
+        </div>
 
-          {/* Dots */}
-          <div className="flex gap-2">
-            {Array.from({ length: totalPages }).map((_, i) => (
-              <button
-                key={i}
-                onClick={() => {
-                  goTo(i);
-                  if (timerRef.current) clearInterval(timerRef.current);
-                }}
-                className="h-2.5 rounded-full transition-all duration-300"
-                style={{
-                  width: page === i ? "2rem" : "0.625rem",
-                  background: page === i ? "#C9A84C" : "#2A2A2A",
-                }}
-                aria-label={`Go to page ${i + 1}`}
-              />
-            ))}
+        {/* Carousel Container */}
+        <div className="relative group">
+          <div className="overflow-hidden">
+            <div 
+              className="flex transition-transform duration-700 ease-in-out gap-6"
+              style={{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }}
+            >
+              {testimonials.map((testimonial, i) => (
+                <div 
+                  key={i}
+                  className="flex-shrink-0 w-full md:w-[calc(50%-12px)] xl:w-[calc(33.333%-16px)]"
+                >
+                  <div className="bg-[#1A1A1A] border border-[#2A2A2A] rounded-[2rem] p-8 h-full flex flex-col items-start transition-all duration-300 hover:-translate-y-2 hover:border-[#C9A84C]/20">
+                    {/* Stars */}
+                    <div className="flex gap-1 mb-6">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star key={star} size={16} className="fill-[#C9A84C] text-[#C9A84C]" />
+                      ))}
+                    </div>
+
+                    {/* Quote */}
+                    <blockquote className="font-heading italic text-[20px] text-[#E8E0D0] leading-relaxed mb-10 flex-grow">
+                      &quot;{testimonial.quote}&quot;
+                    </blockquote>
+
+                    {/* Author */}
+                    <div className="flex items-center gap-4">
+                      <div className="relative w-14 h-14 rounded-full border-2 border-[#C9A84C] overflow-hidden">
+                        <Image src={testimonial.photo} alt={testimonial.name} fill className="object-cover" />
+                      </div>
+                      <div>
+                        <p className="font-body text-[#F5F5F5] text-[15px] font-semibold">
+                          {testimonial.name}
+                        </p>
+                        <p className="font-body text-[#6B6B6B] text-[13px]">
+                          {testimonial.role}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <button
-            onClick={next}
-            id="testimonials-next"
-            className="w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300"
-            style={{ border: "1px solid #2A2A2A", background: "rgba(26,26,26,0.5)", color: "#F5F5F5" }}
-            aria-label="Next testimonials"
+          {/* Navigation Arrows */}
+          <button 
+            onClick={prevSlide}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 md:-translate-x-full w-12 h-12 rounded-full bg-[#1A1A1A] border border-[#2A2A2A] text-[#C9A84C] flex items-center justify-center transition-all hover:bg-[#C9A84C] hover:text-[#0D0D0D] z-20"
           >
-            <ChevronRight size={20} />
+            <ChevronLeft size={24} />
           </button>
+          <button 
+            onClick={nextSlide}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 md:translate-x-full w-12 h-12 rounded-full bg-[#1A1A1A] border border-[#2A2A2A] text-[#C9A84C] flex items-center justify-center transition-all hover:bg-[#C9A84C] hover:text-[#0D0D0D] z-20"
+          >
+            <ChevronRight size={24} />
+          </button>
+        </div>
+
+        {/* Navigation Dots */}
+        <div className="flex justify-center gap-3 mt-12">
+          {Array.from({ length: testimonials.length }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                currentIndex === i ? "w-8 bg-[#C9A84C]" : "w-2 bg-[#2A2A2A]"
+              }`}
+            />
+          ))}
         </div>
       </div>
     </section>

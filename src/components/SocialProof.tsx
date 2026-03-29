@@ -7,71 +7,81 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const metrics = [
-  { value: 127000, prefix: "$", suffix: "", label: "Average Revenue Growth", display: "$127,000" },
-  { value: 340, prefix: "", suffix: "%", label: "ROI for Our Clients", display: "340%" },
-  { value: 90, prefix: "", suffix: " Days", label: "To First Premium Client", display: "90 Days" },
+  {
+    value: "$127,000",
+    label: "Generated in 6 months by a business coach in Lagos",
+  },
+  {
+    value: "340%",
+    label: "Average increase in discovery call bookings",
+  },
+  {
+    value: "90 Days",
+    label: "Average time to hit consistent $10k months",
+  },
 ];
 
 export default function SocialProof() {
   const sectionRef = useRef<HTMLElement>(null);
-  const counterRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useEffect(() => {
     if (!sectionRef.current) return;
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const cards = sectionRef.current.querySelectorAll("[data-metric-card]");
+    const headlineItems = sectionRef.current.querySelectorAll("[data-fade-up]");
 
-    metrics.forEach((metric, i) => {
-      const el = counterRefs.current[i];
-      if (!el) return;
-
-      if (prefersReduced) {
-        el.textContent = metric.display;
-        return;
-      }
-
-      const obj = { value: 0 };
-      gsap.to(obj, {
-        value: metric.value,
-        duration: 2.2,
-        ease: "power1.out",
-        scrollTrigger: { trigger: el, start: "top 85%", once: true },
-        onUpdate: () => {
-          const val = metric.value >= 1000
-            ? Math.floor(obj.value).toLocaleString()
-            : Math.floor(obj.value).toString();
-          el.textContent = `${metric.prefix}${val}${metric.suffix}`;
-        },
-      });
-    });
-
-    // Fade-in cards
-    if (!prefersReduced) {
-      gsap.fromTo(
-        sectionRef.current.querySelectorAll("[data-metric-card]"),
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          stagger: 0.2,
-          ease: "power2.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 80%", once: true },
-        }
-      );
+    if (prefersReduced) {
+      gsap.set([...Array.from(cards), ...Array.from(headlineItems)], { opacity: 1, y: 0 });
+      return;
     }
+
+    gsap.fromTo(
+      headlineItems,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 85%", once: true },
+      }
+    );
+
+    gsap.fromTo(
+      cards,
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.2,
+        ease: "power2.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 80%", once: true },
+      }
+    );
   }, []);
 
   return (
     <section
       ref={sectionRef}
       id="results"
-      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 bg-surface"
+      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 bg-[#1A1A1A]"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-10">
-          <span className="section-label">PROVEN RESULTS</span>
-          <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-cream mt-4">
-            Numbers Don&apos;t <span className="text-gold italic">Lie</span>
+        {/* Label and Headline */}
+        <div className="text-center mb-16">
+          <span 
+            data-fade-up 
+            className="opacity-0 block uppercase text-[#C9A84C] text-[12px] tracking-[0.2em] font-body font-semibold mb-6"
+          >
+            PROVEN RESULTS
+          </span>
+          <h2 
+            data-fade-up 
+            className="opacity-0 font-heading text-[clamp(36px,5vw,56px)] leading-tight text-[#F5F5F5]"
+          >
+            Numbers Don&apos;t Lie
           </h2>
         </div>
 
@@ -81,29 +91,16 @@ export default function SocialProof() {
             <div
               key={i}
               data-metric-card
-              className="opacity-0 text-center p-10 rounded-3xl bg-background border border-border
-                hover:border-gold/30 transition-all duration-500 group"
+              className="opacity-0 bg-[#0D0D0D] border border-[#2A2A2A] rounded-[2rem] p-12 text-center transition-all duration-300 hover:-translate-y-[6px] hover:shadow-2xl hover:shadow-[#C9A84C]/5"
             >
-              <span
-                ref={(el) => { counterRefs.current[i] = el; }}
-                className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold text-gold
-                  group-hover:drop-shadow-[0_0_20px_rgba(201,168,76,0.3)] transition-all duration-500"
-              >
-                {metric.display}
-              </span>
-              <p className="font-body text-muted text-base mt-4 tracking-wide">
+              <div className="font-heading text-[clamp(48px,6vw,72px)] text-[#C9A84C] font-bold leading-none mb-6">
+                {metric.value}
+              </div>
+              
+              <p className="font-body text-[#6B6B6B] text-[14px] leading-relaxed max-w-[200px] mx-auto">
                 {metric.label}
               </p>
             </div>
-          ))}
-        </div>
-
-        {/* Client logos placeholder */}
-        <div className="flex items-center justify-center gap-10 mt-16 flex-wrap opacity-40">
-          {["Forbes", "Inc.", "Entrepreneur", "Fast Company"].map((name) => (
-            <span key={name} className="font-heading text-xl md:text-2xl text-muted/60 tracking-widest">
-              {name}
-            </span>
           ))}
         </div>
       </div>

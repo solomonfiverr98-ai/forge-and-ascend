@@ -3,31 +3,24 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { AlertTriangle, Clock, TrendingDown } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const painPoints = [
   {
-    icon: <Clock size={28} />,
-    emoji: "⏰",
-    title: "Trading Time for Money",
-    description:
-      "You're maxed out at 1-on-1 sessions, working 60-hour weeks, and there's no room to grow. The math doesn't add up for the life you want.",
+    icon: "💸",
+    title: "Traffic That Doesn't Convert",
+    description: "You're spending on ads and posting daily but visitors bounce in under 5 seconds. Your page has no hook.",
   },
   {
-    icon: <TrendingDown size={28} />,
-    emoji: "📉",
-    title: "Feast-or-Famine Revenue",
-    description:
-      "One month 10k, next month $2k. You can't plan your life — let alone your business — when revenue swings wildly every cycle.",
+    icon: "🎯",
+    title: "No Clear Authority Signal",
+    description: "Your site looks like everyone else's. High-ticket clients can't tell why you over the competition.",
   },
   {
-    icon: <AlertTriangle size={28} />,
-    emoji: "🔥",
-    title: "Imposter Syndrome at Scale",
-    description:
-      "You know your results are real, but charging premium prices still feels uncomfortable. Meanwhile, less-qualified coaches charge 3x what you do.",
+    icon: "📅",
+    title: "Empty Discovery Calls",
+    description: "Your calendar should be full of qualified $5k+ clients — not tire kickers who ghost after the call.",
   },
 ];
 
@@ -38,11 +31,25 @@ export default function PainSection() {
     if (!sectionRef.current) return;
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const cards = sectionRef.current.querySelectorAll("[data-pain-card]");
+    const headlineItems = sectionRef.current.querySelectorAll("[data-fade-up]");
 
     if (prefersReduced) {
-      gsap.set(cards, { opacity: 1, y: 0 });
+      gsap.set([...Array.from(cards), ...Array.from(headlineItems)], { opacity: 1, y: 0 });
       return;
     }
+
+    gsap.fromTo(
+      headlineItems,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 85%", once: true },
+      }
+    );
 
     gsap.fromTo(
       cards,
@@ -62,33 +69,44 @@ export default function PainSection() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16"
+      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 bg-[#0D0D0D]"
     >
       <div className="max-w-7xl mx-auto">
-        {/* Label */}
-        <div className="text-center mb-10">
-          <span className="section-label">SOUND FAMILIAR?</span>
-          <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-cream mt-4">
-            The Growth Ceiling <span className="text-gold italic">Is Real</span>
+        {/* Label and Headline */}
+        <div className="text-center mb-16">
+          <span 
+            data-fade-up 
+            className="opacity-0 block uppercase text-[#C9A84C] text-[12px] tracking-[0.2em] font-body font-semibold mb-6"
+          >
+            SOUND FAMILIAR?
+          </span>
+          <h2 
+            data-fade-up 
+            className="opacity-0 font-heading text-[clamp(36px,5vw,56px)] leading-tight text-[#E8E0D0]"
+          >
+            Your Expertise Is Worth More<br />
+            Than Your Website Shows
           </h2>
-          <p className="font-body text-muted text-lg mt-4 max-w-2xl mx-auto">
-            These are the three traps that keep expert coaches stuck below six figures.
-          </p>
         </div>
 
         {/* Pain Cards */}
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-8">
           {painPoints.map((pain, i) => (
             <div
               key={i}
               data-pain-card
-              className="opacity-0 card-lift bg-surface border border-border rounded-2xl p-8 group cursor-default"
+              className="opacity-0 group bg-[#1A1A1A] border border-[#2A2A2A] rounded-[2rem] p-10 transition-all duration-300 hover:-translate-y-[6px] hover:shadow-2xl hover:shadow-[#C9A84C]/5"
             >
-              <span className="text-4xl mb-4 block">{pain.emoji}</span>
-              <h3 className="font-heading text-2xl font-semibold text-cream mb-3 group-hover:text-gold transition-colors">
+              {/* Icon Circle */}
+              <div className="w-10 h-10 rounded-full bg-[#C9A84C] flex items-center justify-center text-xl mb-8">
+                {pain.icon}
+              </div>
+              
+              <h3 className="font-heading text-[24px] text-[#F5F5F5] mb-4 leading-tight">
                 {pain.title}
               </h3>
-              <p className="font-body text-muted text-sm leading-relaxed">
+              
+              <p className="font-body text-[#6B6B6B] text-[15px] leading-relaxed">
                 {pain.description}
               </p>
             </div>

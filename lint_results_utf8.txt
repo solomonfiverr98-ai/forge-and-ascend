@@ -1,0 +1,16 @@
+﻿
+> forge-ascend-app@0.1.0 lint
+> eslint
+
+
+C:\Users\user\Desktop\Vibe Code\Forge and Ascend\forge-ascend-app\src\components\BookingCTA.tsx
+  73:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\user\Desktop\Vibe Code\Forge and Ascend\forge-ascend-app\src\components\SocialProof.tsx
+  84:24  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\user\Desktop\Vibe Code\Forge and Ascend\forge-ascend-app\src\components\Testimonials.tsx
+  55:9  warning  'totalPages' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+Ô£û 3 problems (2 errors, 1 warning)
+

@@ -1,61 +1,93 @@
 "use client";
 
-import { useState, FormEvent } from "react";
-import { Calendar, FileText, ArrowRight, CheckCircle, Loader2, Lock } from "lucide-react";
-import dynamic from "next/dynamic";
+import { useState, useEffect, useRef } from "react";
+import { InlineWidget } from "react-calendly";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const InlineWidget = dynamic(
-  () => import("react-calendly").then((mod) => mod.InlineWidget),
-  { ssr: false }
-);
+gsap.registerPlugin(ScrollTrigger);
 
 export default function BookingCTA() {
-  const [activeTab, setActiveTab] = useState<"calendly" | "form">("calendly");
-  const [formState, setFormState] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [activeTab, setActiveTab] = useState<"call" | "apply">("call");
+  const sectionRef = useRef<HTMLElement>(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    business_type: "",
+    monthly_revenue: "",
+    goal: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    const headlineItems = sectionRef.current.querySelectorAll("[data-fade-up]");
+    
+    gsap.fromTo(
+      headlineItems,
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power3.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 85%", once: true },
+      }
+    );
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFormState("loading");
-    setErrorMsg("");
-
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      phone: formData.get("phone") as string,
-      business_type: formData.get("business_type") as string,
-      monthly_revenue: formData.get("monthly_revenue") as string,
-      goal: formData.get("goal") as string,
-    };
+    setIsSubmitting(true);
+    setError("");
 
     try {
-      const res = await fetch("/api/leads", {
+      const response = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(formData),
       });
 
-      if (res.ok) {
-        setFormState("success");
-      } else {
-        const json = await res.json();
-        setErrorMsg(json.error || "Something went wrong.");
-        setFormState("error");
+      if (!response.ok) {
+        throw new Error("Failed to submit. Please try again.");
       }
-    } catch {
-      setErrorMsg("Network error. Please try again.");
-      setFormState("error");
+
+      setSubmitted(true);
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        business_type: "",
+        monthly_revenue: "",
+        goal: "",
+      });
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <section id="apply" className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 overflow-hidden">
-      {/* FORGE Watermark */}
+    <section
+      ref={sectionRef}
+      id="apply"
+      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 bg-[#0D0D0D] overflow-hidden"
+    >
+      {/* Giant "FORGE" Watermark */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none z-0"
         style={{
-          fontSize: "18vw",
+          fontSize: "20vw",
           color: "#C9A84C",
           opacity: 0.03,
           fontFamily: "var(--font-heading)",
@@ -66,210 +98,189 @@ export default function BookingCTA() {
         FORGE
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto">
-        <div className="text-center mb-4">
-          <span className="section-label">TAKE THE FIRST STEP</span>
+      <div className="relative z-10 w-full max-w-4xl mx-auto text-center">
+        {/* Label and Headline */}
+        <div className="mb-12">
+          <span 
+            data-fade-up 
+            className="opacity-0 block uppercase text-[#C9A84C] text-[12px] tracking-[0.2em] font-body font-semibold mb-6"
+          >
+            TAKE THE FIRST STEP
+          </span>
+          <h2 
+            data-fade-up 
+            className="opacity-0 font-heading text-[clamp(48px,7vw,72px)] text-[#F5F5F5] leading-tight mb-6"
+          >
+          </h2>
+          <p 
+            data-fade-up 
+            className="opacity-0 font-body text-[16px] text-[#6B6B6B] max-w-xl mx-auto leading-relaxed"
+          >
+            Book a free 30-minute strategy call or fill out an application &mdash; and let&apos;s see if you&apos;re a fit.
+          </p>
         </div>
-        <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-cream text-center mb-6">
-          Ready to <span className="text-gold italic">Ascend?</span>
-        </h2>
-        <p className="font-body text-lg text-center max-w-xl mx-auto mb-10" style={{ color: "#6B6B6B" }}>
-          Book a free 30-minute strategy call or fill out an application — and let&apos;s see if you&apos;re a fit.
-        </p>
 
         {/* Tab Switcher */}
-        <div className="flex justify-center gap-3 mb-8">
+        <div 
+          data-fade-up 
+          className="opacity-0 flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
+        >
           <button
-            onClick={() => setActiveTab("calendly")}
-            id="tab-calendly"
-            className="flex items-center gap-2 px-6 py-3 rounded-full font-body text-sm font-semibold transition-all duration-300"
-            style={
-              activeTab === "calendly"
-                ? { background: "#C9A84C", color: "#0D0D0D", boxShadow: "0 0 20px rgba(201,168,76,0.3)" }
-                : { border: "1px solid #2A2A2A", color: "rgba(232,224,208,0.6)" }
-            }
+            onClick={() => setActiveTab("call")}
+            className={`w-full sm:w-auto px-8 py-4 rounded-full font-body font-semibold text-base transition-all duration-300 ${
+              activeTab === "call" ? "bg-[#C9A84C] text-[#0D0D0D]" : "border border-[#2A2A2A] text-[#E8E0D0]/60 hover:text-[#E8E0D0]"
+            }`}
           >
-            <Calendar size={16} />
-            Book Instantly
+             📅 Schedule a Call
           </button>
           <button
-            onClick={() => setActiveTab("form")}
-            id="tab-form"
-            className="flex items-center gap-2 px-6 py-3 rounded-full font-body text-sm font-semibold transition-all duration-300"
-            style={
-              activeTab === "form"
-                ? { background: "#C9A84C", color: "#0D0D0D", boxShadow: "0 0 20px rgba(201,168,76,0.3)" }
-                : { border: "1px solid #2A2A2A", color: "rgba(232,224,208,0.6)" }
-            }
+            onClick={() => setActiveTab("apply")}
+            className={`w-full sm:w-auto px-8 py-4 rounded-full font-body font-semibold text-base transition-all duration-300 ${
+              activeTab === "apply" ? "bg-[#C9A84C] text-[#0D0D0D]" : "border border-[#2A2A2A] text-[#E8E0D0]/60 hover:text-[#E8E0D0]"
+            }`}
           >
-            <FileText size={16} />
-            Send a Message
+             ✍ Apply Now
           </button>
         </div>
 
         {/* Tab Content */}
-        <div className="rounded-3xl overflow-hidden min-h-[500px]" style={{ background: "#1A1A1A" }}>
-          {/* Calendly Tab */}
-          {activeTab === "calendly" && (
-            <InlineWidget
-              url="https://calendly.com/solomonfiverr98/30min"
-              styles={{ minHeight: "650px", width: "100%" }}
-              pageSettings={{
-                backgroundColor: "0D0D0D",
-                primaryColor: "C9A84C",
-                textColor: "F5F5F5",
-              }}
-            />
-          )}
-
-          {/* Form Tab */}
-          {activeTab === "form" && (
-            <div className="p-8 md:p-12">
-              {formState === "success" ? (
-                <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <CheckCircle size={56} style={{ color: "#C9A84C" }} className="mb-6" />
-                  <h3 className="font-heading text-3xl font-bold text-cream mb-3">
-                    Application Received!
-                  </h3>
-                  <p className="font-body text-base max-w-md" style={{ color: "#6B6B6B" }}>
-                    We&apos;ll review your application and get back to you within 24 hours.
+        <div data-fade-up className="opacity-0">
+          {activeTab === "call" ? (
+            <div className="bg-[#1A1A1A] rounded-[2.5rem] overflow-hidden shadow-2xl p-1 md:p-6 lg:p-8">
+              <InlineWidget 
+                url="https://calendly.com/solomonfiverr98/30min"
+                styles={{ minHeight: '650px', width: '100%' }}
+                pageSettings={{
+                  backgroundColor: '0D0D0D',
+                  hideEventTypeDetails: false,
+                  primaryColor: 'C9A84C',
+                  textColor: 'F5F5F5'
+                }}
+              />
+            </div>
+          ) : (
+            <div className="bg-white rounded-[2.5rem] shadow-2xl p-8 md:p-12 lg:p-16 text-left">
+              {submitted ? (
+                <div className="text-center py-12">
+                  <div className="w-20 h-20 bg-[#C9A84C]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <span className="text-3xl">✦</span>
+                  </div>
+                  <h3 className="font-heading text-3xl text-[#0D0D0D] mb-4">Application Received</h3>
+                  <p className="font-body text-[#6B6B6B] text-lg">
+                    We&apos;ve received your application. Our team will review it and get back to you within 24 hours.
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block font-body text-sm font-medium mb-2" style={{ color: "#F5F5F5" }}>
+                <form onSubmit={handleSubmit} className="flex flex-col gap-10">
+                  <div className="grid md:grid-cols-2 gap-10">
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="name" className="font-body text-[12px] uppercase tracking-widest text-[#6B6B6B] font-bold">
                         Full Name *
                       </label>
                       <input
-                        type="text"
-                        name="name"
                         required
-                        id="lead-name"
-                        className="w-full rounded-xl px-4 py-3 font-body text-sm
-                          focus:outline-none transition-colors"
-                        style={{ background: "#0D0D0D", border: "1px solid #2A2A2A", color: "#F5F5F5" }}
-                        placeholder="John Smith"
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        placeholder="John Doe"
+                        className="bg-transparent border-0 border-b border-[#E0E0E0] py-4 focus:ring-0 focus:border-[#C9A84C] transition-colors font-body text-[16px] text-[#0D0D0D] placeholder:text-[#C0C0C0]"
                       />
                     </div>
-                    <div>
-                      <label className="block font-body text-sm font-medium mb-2" style={{ color: "#F5F5F5" }}>
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="email" className="font-body text-[12px] uppercase tracking-widest text-[#6B6B6B] font-bold">
                         Email Address *
                       </label>
                       <input
-                        type="email"
-                        name="email"
                         required
-                        id="lead-email"
-                        className="w-full rounded-xl px-4 py-3 font-body text-sm
-                          focus:outline-none transition-colors"
-                        style={{ background: "#0D0D0D", border: "1px solid #2A2A2A", color: "#F5F5F5" }}
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
                         placeholder="john@example.com"
+                        className="bg-transparent border-0 border-b border-[#E0E0E0] py-4 focus:ring-0 focus:border-[#C9A84C] transition-colors font-body text-[16px] text-[#0D0D0D] placeholder:text-[#C0C0C0]"
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block font-body text-sm font-medium mb-2" style={{ color: "#F5F5F5" }}>
-                      Phone Number
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      id="lead-phone"
-                      className="w-full rounded-xl px-4 py-3 font-body text-sm
-                        focus:outline-none transition-colors"
-                      style={{ background: "#0D0D0D", border: "1px solid #2A2A2A", color: "#F5F5F5" }}
-                      placeholder="+1 (555) 000-0000"
-                    />
+                  <div className="grid md:grid-cols-2 gap-10">
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="phone" className="font-body text-[12px] uppercase tracking-widest text-[#6B6B6B] font-bold">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        placeholder="+1 (555) 000-0000"
+                        className="bg-transparent border-0 border-b border-[#E0E0E0] py-4 focus:ring-0 focus:border-[#C9A84C] transition-colors font-body text-[16px] text-[#0D0D0D] placeholder:text-[#C0C0C0]"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="business_type" className="font-body text-[12px] uppercase tracking-widest text-[#6B6B6B] font-bold">
+                        What type of coaching do you do?
+                      </label>
+                      <input
+                        type="text"
+                        id="business_type"
+                        name="business_type"
+                        value={formData.business_type}
+                        onChange={handleInputChange}
+                        placeholder="Executive Coaching, Life Coaching, etc."
+                        className="bg-transparent border-0 border-b border-[#E0E0E0] py-4 focus:ring-0 focus:border-[#C9A84C] transition-colors font-body text-[16px] text-[#0D0D0D] placeholder:text-[#C0C0C0]"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block font-body text-sm font-medium mb-2" style={{ color: "#F5F5F5" }}>
-                      What type of coaching do you do?
-                    </label>
-                    <select
-                      name="business_type"
-                      id="lead-business-type"
-                      className="w-full rounded-xl px-4 py-3 font-body text-sm
-                        focus:outline-none transition-colors"
-                      style={{ background: "#0D0D0D", border: "1px solid #2A2A2A", color: "#F5F5F5" }}
+                  <div className="grid md:grid-cols-2 gap-10">
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="monthly_revenue" className="font-body text-[12px] uppercase tracking-widest text-[#6B6B6B] font-bold">
+                        Numbers Don&apos;t Lie: Current monthly revenue?
+                      </label>
+                      <input
+                        type="text"
+                        id="monthly_revenue"
+                        name="monthly_revenue"
+                        value={formData.monthly_revenue}
+                        onChange={handleInputChange}
+                        placeholder="$3,000 / month"
+                        className="bg-transparent border-0 border-b border-[#E0E0E0] py-4 focus:ring-0 focus:border-[#C9A84C] transition-colors font-body text-[16px] text-[#0D0D0D] placeholder:text-[#C0C0C0]"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="goal" className="font-body text-[12px] uppercase tracking-widest text-[#6B6B6B] font-bold">
+                        What is your goal in 90 days?
+                      </label>
+                      <input
+                        type="text"
+                        id="goal"
+                        name="goal"
+                        value={formData.goal}
+                        onChange={handleInputChange}
+                        placeholder="Hit consistent $10k months"
+                        className="bg-transparent border-0 border-b border-[#E0E0E0] py-4 focus:ring-0 focus:border-[#C9A84C] transition-colors font-body text-[16px] text-[#0D0D0D] placeholder:text-[#C0C0C0]"
+                      />
+                    </div>
+                  </div>
+
+                  {error && <p className="text-red-500 font-body text-sm">{error}</p>}
+
+                  <div className="mt-6 flex flex-col items-center gap-6">
+                    <button
+                      disabled={isSubmitting}
+                      type="submit"
+                      className="w-full bg-[#C9A84C] text-[#0D0D0D] rounded-full py-5 px-8 font-body font-bold text-lg transition-all duration-300 hover:scale-[1.02] disabled:opacity-50"
                     >
-                      <option value="">Select...</option>
-                      <option value="life_coaching">Life Coaching</option>
-                      <option value="business_coaching">Business Coaching</option>
-                      <option value="executive_coaching">Executive Coaching</option>
-                      <option value="health_wellness">Health &amp; Wellness</option>
-                      <option value="relationship">Relationship</option>
-                      <option value="other">Other</option>
-                    </select>
+                      {isSubmitting ? "Submitting..." : "Apply for Your Strategy Call →"}
+                    </button>
+                    <p className="font-body text-[13px] text-[#6B6B6B] flex items-center gap-2">
+                      🔒 We respect your privacy. No spam ever.
+                    </p>
                   </div>
-
-                  <div>
-                    <label className="block font-body text-sm font-medium mb-2" style={{ color: "#F5F5F5" }}>
-                      Current monthly revenue?
-                    </label>
-                    <select
-                      name="monthly_revenue"
-                      id="lead-revenue"
-                      className="w-full rounded-xl px-4 py-3 font-body text-sm
-                        focus:outline-none transition-colors"
-                      style={{ background: "#0D0D0D", border: "1px solid #2A2A2A", color: "#F5F5F5" }}
-                    >
-                      <option value="">Select...</option>
-                      <option value="0-3k">$0 – $3,000</option>
-                      <option value="3k-5k">$3,000 – $5,000</option>
-                      <option value="5k-10k">$5,000 – $10,000</option>
-                      <option value="10k+">$10,000+</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block font-body text-sm font-medium mb-2" style={{ color: "#F5F5F5" }}>
-                      What is your goal in 90 days?
-                    </label>
-                    <textarea
-                      name="goal"
-                      rows={3}
-                      id="lead-goal"
-                      className="w-full rounded-xl px-4 py-3 font-body text-sm
-                        focus:outline-none transition-colors resize-none"
-                      style={{ background: "#0D0D0D", border: "1px solid #2A2A2A", color: "#F5F5F5" }}
-                      placeholder="e.g., Close my first $5k client, build a group program..."
-                    />
-                  </div>
-
-                  {formState === "error" && (
-                    <p className="font-body text-red-400 text-sm">{errorMsg}</p>
-                  )}
-
-                  <button
-                    type="submit"
-                    id="lead-submit"
-                    disabled={formState === "loading"}
-                    className="group w-full py-4 rounded-full font-body font-semibold text-base
-                      transition-all duration-300 flex items-center justify-center gap-2
-                      hover:shadow-[0_0_30px_rgba(201,168,76,0.4)] disabled:opacity-60 disabled:cursor-not-allowed"
-                    style={{ background: "#C9A84C", color: "#0D0D0D" }}
-                  >
-                    {formState === "loading" ? (
-                      <>
-                        <Loader2 size={18} className="animate-spin" />
-                        Submitting...
-                      </>
-                    ) : (
-                      <>
-                        Apply for Your Strategy Call
-                        <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-                      </>
-                    )}
-                  </button>
-
-                  <p className="text-center font-body text-xs flex items-center justify-center gap-1.5" style={{ color: "#6B6B6B" }}>
-                    <Lock size={12} />
-                    We respect your privacy. No spam ever.
-                  </p>
                 </form>
               )}
             </div>

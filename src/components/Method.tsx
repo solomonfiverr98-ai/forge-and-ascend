@@ -3,31 +3,28 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Target, BarChart3, Rocket } from "lucide-react";
+import { Target, Layers, Rocket } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const steps = [
   {
     number: "01",
-    icon: <Target size={28} className="text-gold" />,
-    title: "Forge Your Offer",
-    description:
-      "We reverse-engineer your ideal client's biggest pain point and package your expertise into a premium offer that sells at $3k–$15k — without a hard pitch.",
+    icon: <Target className="w-8 h-8 text-white" />,
+    title: "Clarity & Positioning",
+    description: "We define your unique authority and ideal client so your page speaks directly to buyers not browsers.",
   },
   {
     number: "02",
-    icon: <BarChart3 size={28} className="text-gold" />,
-    title: "Build the Engine",
-    description:
-      "Install our automated client acquisition system: organic + paid funnels, application flows, and a booking pipeline that fills your calendar with qualified leads.",
+    icon: <Layers className="w-8 h-8 text-white" />,
+    title: "Premium Presence Build",
+    description: "We build your conversion-focused landing page with proven psychology, premium design, and seamless booking.",
   },
   {
     number: "03",
-    icon: <Rocket size={28} className="text-gold" />,
-    title: "Ascend to Freedom",
-    description:
-      "Scale with group programs, digital assets, and a lean team. You stop trading hours for dollars and start building real wealth — on your terms.",
+    icon: <Rocket className="w-8 h-8 text-white" />,
+    title: "Launch & Scale",
+    description: "Go live with a 24/7 sales machine that books qualified calls while you focus on coaching.",
   },
 ];
 
@@ -37,23 +34,37 @@ export default function Method() {
   useEffect(() => {
     if (!sectionRef.current) return;
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const cards = sectionRef.current.querySelectorAll("[data-step-card]");
+    const headlineItems = sectionRef.current.querySelectorAll("[data-fade-up]");
+    const stepItems = sectionRef.current.querySelectorAll("[data-step-item]");
 
     if (prefersReduced) {
-      gsap.set(cards, { opacity: 1, y: 0 });
+      gsap.set([...Array.from(headlineItems), ...Array.from(stepItems)], { opacity: 1, y: 0 });
       return;
     }
 
     gsap.fromTo(
-      cards,
-      { opacity: 0, y: 50 },
+      headlineItems,
+      { opacity: 0, y: 30 },
       {
         opacity: 1,
         y: 0,
         duration: 0.8,
-        stagger: 0.2,
+        stagger: 0.1,
         ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 75%", once: true },
+        scrollTrigger: { trigger: sectionRef.current, start: "top 85%", once: true },
+      }
+    );
+
+    gsap.fromTo(
+      stepItems,
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.2,
+        ease: "power2.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 80%", once: true },
       }
     );
   }, []);
@@ -62,49 +73,61 @@ export default function Method() {
     <section
       ref={sectionRef}
       id="process"
-      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16"
+      className="relative py-16 md:py-24 px-6 md:px-12 lg:px-16 bg-[#0D0D0D] overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-10">
-          <span className="section-label">THE METHOD</span>
-          <h2 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-cream mt-4">
-            Three Steps to <span className="text-gold italic">Scale</span>
+        {/* Label and Headline */}
+        <div className="text-center mb-24">
+          <span 
+            data-fade-up 
+            className="opacity-0 block uppercase text-[#C9A84C] text-[12px] tracking-[0.2em] font-body font-semibold mb-6"
+          >
+            THE METHOD
+          </span>
+          <h2 
+            data-fade-up 
+            className="opacity-0 font-heading text-[clamp(36px,5vw,56px)] leading-tight text-[#F5F5F5]"
+          >
+            How We Forge Your<br />
+            High-Ticket Presence
           </h2>
-          <p className="font-body text-muted text-lg mt-4 max-w-2xl mx-auto">
-            A battle-tested framework used by 200+ coaches to break through the revenue ceiling.
-          </p>
         </div>
 
-        {/* Steps */}
-        <div className="grid md:grid-cols-3 gap-8">
+        {/* Steps Grid */}
+        <div className="relative grid md:grid-cols-3 gap-12 lg:gap-16">
+          
+          {/* Connecting Dashed Line (Desktop Only) */}
+          <div className="hidden md:block absolute top-[36px] left-[15%] right-[15%] h-[1px] border-t border-dashed border-[#C9A84C]/40 z-0" />
+
           {steps.map((step, i) => (
             <div
               key={i}
-              data-step-card
-              className="opacity-0 relative bg-surface border border-border rounded-3xl p-8 pt-14 group
-                hover:border-gold/30 transition-all duration-500"
+              data-step-item
+              className="opacity-0 flex flex-col items-center text-center relative z-10"
             >
-              {/* Watermark Number */}
-              <span className="absolute top-4 right-6 font-heading text-[80px] font-bold text-gold/5 leading-none select-none">
-                {step.number}
-              </span>
+              {/* Icon Container */}
+              <div className="relative flex items-center justify-center mb-12">
+                {/* Watermark Number */}
+                <div 
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-heading text-[140px] font-bold text-[#C9A84C] opacity-10 leading-none select-none -z-10"
+                >
+                  {step.number}
+                </div>
 
-              <div className="relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center mb-5">
+                {/* Icon Circle */}
+                <div className="w-[72px] h-[72px] rounded-full bg-[#C9A84C] flex items-center justify-center shadow-lg shadow-[#C9A84C]/20">
                   {step.icon}
                 </div>
-                <h3 className="font-heading text-2xl md:text-3xl font-semibold text-cream mb-3 group-hover:text-gold transition-colors">
-                  {step.title}
-                </h3>
-                <p className="font-body text-muted text-sm leading-relaxed">
-                  {step.description}
-                </p>
               </div>
 
-              {/* Step indicator line */}
-              {i < steps.length - 1 && (
-                <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-px bg-border" />
-              )}
+              {/* Step Content */}
+              <h3 className="font-heading text-[28px] text-[#F5F5F5] mb-4 leading-tight">
+                {step.title}
+              </h3>
+              
+              <p className="font-body text-[#6B6B6B] text-[15px] leading-relaxed max-w-[220px]">
+                {step.description}
+              </p>
             </div>
           ))}
         </div>
